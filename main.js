@@ -1,6 +1,7 @@
 const request = require('request')
 const cheerio = require('cheerio')
 const Q = require('q')
+const util = require('util')
 
 const fetch = (url) => {
   return Q.promise((resolve, reject) => {
@@ -13,7 +14,7 @@ const fetch = (url) => {
     })
   })
 }
-const HOMEPAGE = 'http://s521389927.siteweb-initial.fr/'
+const HOMEPAGE = 'http://www.editions-mergane.com'
 
 const fetchSubMenuItems = (url) => {
   const subMenuItems = []
@@ -22,7 +23,7 @@ const fetchSubMenuItems = (url) => {
       let $ = cheerio.load(body)
       const links = $('#mainNav2 a')
       links.each((index, link) => {
-        subMenuItems.push(link)
+        subMenuItems.push(cheerio(link).attr('href'))
       })
       resolve({url: url, items: subMenuItems})
     }).catch(error => {
@@ -58,5 +59,5 @@ const fetchMenuItems = (url) => {
 }
 
 fetchMenuItems(HOMEPAGE).then(links => {
-  console.log(links)
-})
+  console.dir(links, {depth: null, colors: true})
+}).catch(error => console.log(error))
