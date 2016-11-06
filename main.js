@@ -1,7 +1,6 @@
 const request = require('request')
 const cheerio = require('cheerio')
 const Q = require('q')
-const util = require('util')
 
 const fetch = (url) => {
   return Q.promise((resolve, reject) => {
